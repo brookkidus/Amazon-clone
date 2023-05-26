@@ -1,9 +1,11 @@
 import './App.css';
 import Header from './Header';
 import Home from './Home';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Checkout from './Checkout';
 import Login from './Login';
+import SharedItems from './SharedItems';
+
 import { useStateValue } from './StateProvider';
 import React, { useEffect } from 'react';
 import { auth } from './firebase';
@@ -13,7 +15,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import Orders from './Orders';
 
 const promise = loadStripe(
-  'pk_test_51Hf9EsIjq2KMm1vIrtyaI9OtGTvf45UJtZJgN3TPTmOaTQ5IAqHwTs4YIhZCQNNphj6NkIAFZN75pLloPCwMrsZz00SVhcXIq6'
+  'pk_test_51N2PvaBT4XGJH2fWE9R5v8STa04uLFSvWrumjGOiclVjPSRdrRru8ELMESKFUny3a1m52ru9LOlSSpq1kOa16iRh00XpX8SaTL'
 );
 
 function App() {
@@ -39,32 +41,29 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route path="/orders">
-            <Header />
-            <Orders />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/payment">
-            <Elements stripe={promise}>
-              <Payment />
-            </Elements>
-          </Route>
-          <Route path="/checkout">
-            <Header />
-            <Checkout />
-          </Route>
-          <Route path="/">
-            <Header />
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+    <BrowserRouter>
+    <div>
+    <Routes>
+      <Route path="/" element={<SharedItems />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/payment"
+          element={
+            <>
+              <Elements stripe={promise}>
+                <Payment />
+              </Elements>
+            </>
+          }
+        />
+        <Route path="/Checkout" element={<Checkout />} />
+        
+      </Route>
+    </Routes>
+  </div>
+  </BrowserRouter>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CheckoutProduct from './CheckoutProduct';
 import './Payment.css';
 import { useStateValue } from './StateProvider';
@@ -11,7 +11,7 @@ import { db } from './firebase';
 function Payment() {
   const [{ basket, user }, dispatch] = useStateValue();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const getBasketTotal = (basket) =>
     basket?.reduce((amount, item) => item.price + amount, 0);
@@ -74,7 +74,7 @@ function Payment() {
           type: 'EMPTY_BASKET',
         });
 
-        history.replace('/orders');
+        navigate('/orders');
       });
   };
 
